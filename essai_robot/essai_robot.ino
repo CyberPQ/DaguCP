@@ -1,15 +1,4 @@
-/*
-  Fade
-
-  This example shows how to fade an LED on pin 9
-  using the analogWrite() function.
-
-  This example code is in the public domain.
-*/
-
-
-
-int PIN_LED = 13;           // the pin that the LED is attached to
+int PIN_LED = 13;          
 int vitesse = 0;
 int var_rampe = 5;
 int PIN_MOT1_DIR = 7;
@@ -267,5 +256,4 @@ void loop() {
       break;
   }
 }
-
 
