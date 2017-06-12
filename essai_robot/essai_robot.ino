@@ -115,27 +115,47 @@ void loop_manuel(char Commande){
      {
       case '8':
         vitesseMoteurS(vitesse,vitesse);
-        
+        delay(2000);
+        vitesseMoteurS (0, 0); 
         break;
       case '2':
         vitesseMoteurS(1-vitesse,-vitesse);
-        
+        delay(2000);
+        vitesseMoteurS (0, 0); 
         break;
-      case '6':
-        vitesseMoteurS(vitesse,-vitesse);
-        break; 
       case '4':
+        vitesseMoteurS(vitesse,-vitesse);
+        delay(500);
+        vitesseMoteurS (0, 0); 
+        break; 
+      case '6':
         vitesseMoteurS(-vitesse,vitesse);
+        delay(500);
+        vitesseMoteurS (0, 0); 
         break;
       case '5':
         vitesseMoteurS(0,0);
         break;
-      case '7':
-        vitesseMoteurS(0,vitesse);
-        break;     
       case '9':
-        vitesseMoteurS(vitesse,0);
+        vitesseMoteurS(0.25*vitesse,vitesse);
+        delay(2000);
+        vitesseMoteurS (0, 0); 
+        break;     
+      case '7':
+        vitesseMoteurS(vitesse,0.25*vitesse);
+        delay(2000);
+        vitesseMoteurS (0, 0); 
         break;
+      case '1':
+        vitesseMoteurS(-0.25*vitesse,-vitesse);
+        delay(2000);
+        vitesseMoteurS (0, 0); 
+        break;
+      case '3':
+        vitesseMoteurS(-vitesse,-0.25*vitesse);
+        delay(2000);
+        vitesseMoteurS (0, 0); 
+        break;        
      }
   }
 
