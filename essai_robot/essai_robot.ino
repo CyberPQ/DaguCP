@@ -7,6 +7,8 @@
   This example code is in the public domain.
 */
 
+
+
 int PIN_LED = 13;           // the pin that the LED is attached to
 int vitesse = 0;
 int var_rampe = 5;
@@ -14,6 +16,7 @@ int PIN_MOT1_DIR = 7;
 int PIN_MOT2_DIR = 8;
 int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
+int PIN_SERVO = 11;
 
 char Mode = 's';
 char Commande = ' ';
@@ -21,11 +24,15 @@ char Commande = ' ';
 // the setup routine runs once when you press reset:
 void setup() {
 
+
   // initialize serial:
   Serial.begin(9600);
   Serial.println(" r : fait des rampes de vitesse");
   Serial.println(" s : stop");
   Serial.println(" m : manuel (pave numerique)");
+  Serial.println("   1,2,3,4,6,7,8,9 : controle");
+  Serial.println("   5 : arret");
+  Serial.println("   /,*,- : controle du servo moteur");
 
   digitalWrite(PIN_MOT1_DIR, LOW);
   digitalWrite(PIN_MOT2_DIR, LOW);
@@ -36,7 +43,7 @@ void setup() {
   pinMode(PIN_MOT2_DIR, OUTPUT);
   pinMode(PIN_MOT1_VIT, OUTPUT);
   pinMode(PIN_MOT2_VIT, OUTPUT);
-
+  pinMode(PIN_SERVO, OUTPUT);
 
   loop_stop();
 }
@@ -125,12 +132,12 @@ void loop_manuel(char Commande) {
       break;
     case '4':
       vitesseMoteurS(vitesse, -vitesse);
-      delay(500);
+      delay(700);
       vitesseMoteurS (0, 0);
       break;
     case '6':
       vitesseMoteurS(-vitesse, vitesse);
-      delay(500);
+      delay(700);
       vitesseMoteurS (0, 0);
       break;
     case '5':
@@ -156,8 +163,33 @@ void loop_manuel(char Commande) {
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
+    case '/':
+      set_servo(1000);
+      break;
+    case '*':
+      set_servo(1500);
+      break;
+    case '-':
+      set_servo(2000);
+      break;
   }
 }
+
+void set_servo(int angle)
+{
+  int i = 0;
+
+  for (i = 0; i < 300; i++)
+  {
+    digitalWrite(11, HIGH);   
+    delayMicroseconds(angle);       
+    digitalWrite(11, LOW);    
+    delayMicroseconds(20000);        
+  }
+}
+
+
+
 
 
 void loop() {
