@@ -17,11 +17,11 @@ int PIN_MOT2_DIR = 8;
 int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
 int PIN_SERVO = 11;
+int distance = 0;
 
 char Mode = 's';
 char Commande = ' ';
 
-// the setup routine runs once when you press reset:
 void setup() {
 
 
@@ -46,6 +46,7 @@ void setup() {
   pinMode(PIN_SERVO, OUTPUT);
 
   loop_stop();
+  set_servo(1500);
 }
 
 void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
@@ -114,6 +115,11 @@ void loop_stop()
 }
 
 void loop_manuel(char Commande) {
+  int mesureCm(void);
+  {
+    distance = random(1,10);
+    return distance;
+  }
   digitalWrite(PIN_LED, HIGH);
   delay(150);
   digitalWrite(PIN_LED, LOW);
@@ -165,21 +171,31 @@ void loop_manuel(char Commande) {
       break;
     case '/':
       set_servo(1000);
+      distance = mesureCm(); 
+      Serial.println(distance);
       break;
     case '*':
       set_servo(1500);
+      distance = mesureCm(); 
+      Serial.println(distance);
       break;
     case '-':
       set_servo(2000);
+      distance = mesureCm(); 
+      Serial.println(distance);
       break;
   }
 }
+
+
+
+
 
 void set_servo(int angle)
 {
   int i = 0;
 
-  for (i = 0; i < 300; i++)
+  for (i = 0; i < 70; i++)
   {
     digitalWrite(11, HIGH);   
     delayMicroseconds(angle);       
@@ -188,7 +204,10 @@ void set_servo(int angle)
   }
 }
 
-
+void aleatoire()
+{
+  vitesseMoteurS(random(-255,255),random(-255,255));
+}
 
 
 
@@ -213,7 +232,7 @@ void loop() {
     }
     Serial.print("Activation du mode ");
     Serial.print(Mode);
-    Serial.print("(vitesse courante : ");
+    Serial.print(" (vitesse courante : ");
     Serial.print(vitesse);
     Serial.println(")");
   }
