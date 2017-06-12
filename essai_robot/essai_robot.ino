@@ -115,11 +115,12 @@ void loop_stop()
 }
 
 void loop_manuel(char Commande) {
-  int mesureCm(void);
+  /*int mesureCm(void);
   {
-    distance = random(1,10);
+    distance = random(1, 10);
     return distance;
   }
+  */
   digitalWrite(PIN_LED, HIGH);
   delay(150);
   digitalWrite(PIN_LED, LOW);
@@ -170,19 +171,20 @@ void loop_manuel(char Commande) {
       vitesseMoteurS (0, 0);
       break;
     case '/':
+      
       set_servo(1000);
-      distance = mesureCm(); 
-      Serial.println(distance);
+      //distance = mesureCm();
+      //Serial.println(distance);
       break;
     case '*':
       set_servo(1500);
-      distance = mesureCm(); 
-      Serial.println(distance);
+      //distance = mesureCm();
+      //Serial.println(distance);
       break;
     case '-':
       set_servo(2000);
-      distance = mesureCm(); 
-      Serial.println(distance);
+      //distance = mesureCm();
+      //Serial.println(distance);
       break;
   }
 }
@@ -197,16 +199,16 @@ void set_servo(int angle)
 
   for (i = 0; i < 70; i++)
   {
-    digitalWrite(11, HIGH);   
-    delayMicroseconds(angle);       
-    digitalWrite(11, LOW);    
-    delayMicroseconds(20000);        
+    digitalWrite(11, HIGH);
+    delayMicroseconds(angle);
+    digitalWrite(11, LOW);
+    delayMicroseconds(20000);
   }
 }
 
 void loop_aleatoire()
 {
-  vitesseMoteurS(random(-255,255),random(-255,255));
+  vitesseMoteurS(random(-255, 255), random(-255, 255));
   delay(1000);
 }
 
@@ -233,6 +235,7 @@ void loop() {
       case 'x':
         Mode = 'x';
         break;
+      
     }
     Serial.print("Activation du mode ");
     Serial.print(Mode);
@@ -260,6 +263,7 @@ void loop() {
     case 'x':
       //mode aleatoire
       loop_aleatoire();
+      Touche = '\0';
       break;
   }
 }
