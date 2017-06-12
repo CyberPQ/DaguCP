@@ -36,9 +36,18 @@ void setup() {
  pinMode(PIN_MOT2_DIR, OUTPUT);
  pinMode(PIN_MOT1_VIT, OUTPUT);
  pinMode(PIN_MOT2_VIT, OUTPUT);
+
+ 
  loop_stop();
  }
  
+void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
+{
+  vitesseMoteur(1,VIT_moteur1);
+  vitesseMoteur(2,VIT_moteur2);
+}
+
+
 void vitesseMoteur(int no_moteur, int vitesse_signe)
 {
   int PIN_MOTEUR_DIR=0;
@@ -80,8 +89,7 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 
 // the loop routine runs over and over again forever:
 void loop_rampe() {
- vitesseMoteur (1, vitesse);
- vitesseMoteur (2, vitesse);  
+ vitesseMoteurS (vitesse, vitesse);
  
  vitesse = vitesse + var_rampe;
  
@@ -94,8 +102,7 @@ void loop_rampe() {
 
 void loop_stop()
 {
-  vitesseMoteur (1, 0);
-  vitesseMoteur (2, 0);  
+  vitesseMoteurS (0, 0); 
   delay(300);
 }
 
@@ -107,32 +114,27 @@ void loop_manuel(char Commande){
     switch (Commande)
      {
       case '8':
-        vitesseMoteur(1,vitesse);
-        vitesseMoteur(2,vitesse);
+        vitesseMoteurS(vitesse,vitesse);
+        
         break;
       case '2':
-        vitesseMoteur(1,-vitesse);
-        vitesseMoteur(2,-vitesse);
+        vitesseMoteurS(1-vitesse,-vitesse);
+        
         break;
       case '6':
-        vitesseMoteur(1,vitesse);
-        vitesseMoteur(2,-vitesse);
+        vitesseMoteurS(vitesse,-vitesse);
         break; 
       case '4':
-        vitesseMoteur(1,-vitesse);
-        vitesseMoteur(2,vitesse);
+        vitesseMoteurS(-vitesse,vitesse);
         break;
       case '5':
-        vitesseMoteur(1,0);
-        vitesseMoteur(2,0);
+        vitesseMoteurS(0,0);
         break;
       case '7':
-        vitesseMoteur(1,0);
-        vitesseMoteur(2,vitesse);
+        vitesseMoteurS(0,vitesse);
         break;     
       case '9':
-        vitesseMoteur(1,vitesse);
-        vitesseMoteur(2,0);
+        vitesseMoteurS(vitesse,0);
         break;
      }
   }
@@ -141,8 +143,7 @@ void loop_manuel(char Commande){
 void loop() {
   char Touche = 's';
   digitalWrite(PIN_LED, HIGH);
- 
-  
+
   if (Serial.available() > 0)
   {
     Touche = Serial.read();
