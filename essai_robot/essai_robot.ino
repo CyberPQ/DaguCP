@@ -204,9 +204,10 @@ void set_servo(int angle)
   }
 }
 
-void aleatoire()
+void loop_aleatoire()
 {
   vitesseMoteurS(random(-255,255),random(-255,255));
+  delay(1000);
 }
 
 
@@ -228,6 +229,9 @@ void loop() {
         break;
       case 'm':
         Mode = 'm';
+        break;
+      case 'x':
+        Mode = 'x';
         break;
     }
     Serial.print("Activation du mode ");
@@ -252,6 +256,10 @@ void loop() {
       vitesse = 100;
       loop_manuel(Touche);
       Touche = '\0';
+      break;
+    case 'x':
+      //mode aleatoire
+      loop_aleatoire();
       break;
   }
 }
