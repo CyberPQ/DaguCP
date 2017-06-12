@@ -16,14 +16,16 @@ int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
 
 char Mode = 's';
+char Commande = ' ';
 
 // the setup routine runs once when you press reset:
 void setup() {
   
   // initialize serial:
   Serial.begin(9600);
-  Serial.println(" r : fait des rampe de vitesses");
+  Serial.println(" r : fait des rampes de vitesse");
   Serial.println(" s : stop");
+  Serial.println(" m : manuel (pave numerique)");
   
  digitalWrite(PIN_MOT1_DIR, LOW);
  digitalWrite(PIN_MOT2_DIR, LOW);
@@ -97,15 +99,70 @@ void loop_stop()
   delay(300);
 }
 
+void loop_manuel(char Commande){
+ digitalWrite(PIN_LED, HIGH);
+ delay(150);
+ digitalWrite(PIN_LED, LOW);
+ delay(150);
+    switch (Commande)
+     {
+      case '8':
+        vitesseMoteur(1,vitesse);
+        vitesseMoteur(2,vitesse);
+        break;
+      case '2':
+        vitesseMoteur(1,-vitesse);
+        vitesseMoteur(2,-vitesse);
+        break;
+      case '6':
+        vitesseMoteur(1,vitesse);
+        vitesseMoteur(2,-vitesse);
+        break; 
+      case '4':
+        vitesseMoteur(1,-vitesse);
+        vitesseMoteur(2,vitesse);
+        break;
+      case '5':
+        vitesseMoteur(1,0);
+        vitesseMoteur(2,0);
+        break;
+      case '7':
+        vitesseMoteur(1,0);
+        vitesseMoteur(2,vitesse);
+        break;     
+      case '9':
+        vitesseMoteur(1,vitesse);
+        vitesseMoteur(2,0);
+        break;
+     }
+  }
+
+
 void loop() {
+  char Touche = 's';
   digitalWrite(PIN_LED, HIGH);
  
   
   if (Serial.available() > 0)
   {
-    Mode = Serial.read();
+    Touche = Serial.read();
+    switch(Touche)
+    {
+      case 's': 
+        Mode = 's';
+        break;
+      case 'r':
+        Mode = 'r';
+        break;
+      case 'm':
+        Mode = 'm';
+        break;
+    }   
     Serial.print("Activation du mode ");
-    Serial.println(Mode);
+    Serial.print(Mode);
+    Serial.print("(vitesse courante : ");
+    Serial.print(vitesse);
+    Serial.println(")");
   }
 
   switch (Mode) 
@@ -118,7 +175,13 @@ void loop() {
         // rampe mode
         loop_rampe();
         break;
-      
+      case 'm':
+        // mode manuel
+        vitesse = 100;
+        loop_manuel(Touche);
+        Touche = '\0';
+        break;
   }
 }
+
 
