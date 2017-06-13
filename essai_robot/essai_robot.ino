@@ -50,7 +50,7 @@ void setup() {
   float voltage =  analogRead(A7) * (10.0 / 1023.0);
   Serial.print(voltage);
   Serial.println(" volts.");
-  
+  usage();
 }
 
 void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
@@ -102,12 +102,16 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 // the loop routine runs over and over again forever:
 void usage(void)
 {
+  Serial.println(" h/? : Aide");
+  Serial.println(" a/joystick : Automatique");
+  Serial.println(" x : Aleatoire");
   Serial.println(" r : fait des rampes de vitesse");
-  Serial.println(" s : stop");
+  Serial.println(" s/joystick : stop");
   Serial.println(" m : manuel (pave numerique)");
   Serial.println("   1,2,3,4,6,7,8,9 : controle");
   Serial.println("   5 : arret");
   Serial.println("   /,*,- : controle du servo moteur");
+  Serial.println(" Plus d'aide dans le fichier README");
 }
 
 void loop_rampe() {
@@ -186,22 +190,22 @@ void loop_manuel(char Commande) {
       vitesseMoteurS(0, 0);
       break;
     case '9':
-      vitesseMoteurS(0.25 * vitesse, vitesse);
+      vitesseMoteurS(0.35 * vitesse, vitesse);
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
     case '7':
-      vitesseMoteurS(vitesse, 0.25 * vitesse);
+      vitesseMoteurS(vitesse, 0);
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
     case '1':
-      vitesseMoteurS(-0.25 * vitesse, -vitesse);
+      vitesseMoteurS(-0.40 * vitesse, -vitesse);
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
     case '3':
-      vitesseMoteurS(-vitesse, -0.25 * vitesse);
+      vitesseMoteurS(-vitesse, 0);
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
@@ -231,22 +235,18 @@ void analyse_distance(void)
 {
   set_servo(POSITION_GAUCHE);
   distance_gauche = mesureCm();
-  Serial.print(distance_gauche);
-  Serial.print(" ");
+  delay(500);
   set_servo(POSITION_MILIEU);
   distance_centre = mesureCm();
-  Serial.print(distance_centre);
-  Serial.print(" ");
-  
+  delay(500);
   set_servo(POSITION_DROITE);
   distance_droite = mesureCm();
-  Serial.print(distance_droite);
-  Serial.println(" ");
+  delay(500);
 }
 void loop_auto (void) 
 {
   analyse_distance();
-  if (distance_centre < 30)
+  if (distance_centre < 40)
   {
     if (distance_droite < distance_gauche)
     {
@@ -259,13 +259,13 @@ void loop_auto (void)
   }
   else 
   {
-    if (distance_droite < 40)
+    if (distance_gauche < 50)
     {
-      vitesseMoteurS(0.25 * vitesse, vitesse);
+      vitesseMoteurS(0, vitesse);
     }
-    else if (distance_gauche < 40) 
+    else if (distance_droite < 50) 
     {
-      vitesseMoteurS(vitesse, 0.25 * vitesse);
+      vitesseMoteurS(vitesse, 0);
     }
     else
     {
