@@ -1,12 +1,14 @@
 int PIN_LED = 13;          
 int vitesse = 0;
+int distance = 0;
 int var_rampe = 5;
 int PIN_MOT1_DIR = 7;
 int PIN_MOT2_DIR = 8;
 int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
-int PIN_SERVO = 11;
-int distance = 0;
+int PIN_SERVO = 12;
+int PIN_TRIG = 11;
+int PIN_ECHO = 6;
 
 char Mode = 's';
 char Commande = ' ';
@@ -33,6 +35,8 @@ void setup() {
   pinMode(PIN_MOT1_VIT, OUTPUT);
   pinMode(PIN_MOT2_VIT, OUTPUT);
   pinMode(PIN_SERVO, OUTPUT);
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
 
   loop_stop();
   set_servo(1500);
@@ -102,14 +106,23 @@ void loop_stop()
   vitesseMoteurS (0, 0);
   delay(300);
 }
-
+ 
+int mesureCm(void)
+{
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+    
+    int microseconds = pulseIn(PIN_ECHO, HIGH);
+    int mesureCm = microseconds / 29 / 2;
+    return mesureCm;
+}
+  
 void loop_manuel(char Commande) {
-  /*int mesureCm(void);
-  {
-    distance = random(1, 10);
-    return distance;
-  }
-  */
+  
+  
   digitalWrite(PIN_LED, HIGH);
   delay(150);
   digitalWrite(PIN_LED, LOW);
@@ -160,20 +173,22 @@ void loop_manuel(char Commande) {
       vitesseMoteurS (0, 0);
       break;
     case '/':
-      
       set_servo(1000);
-      //distance = mesureCm();
-      //Serial.println(distance);
+      distance = mesureCm();
+      Serial.print(distance);
+      Serial.println(" cm");
       break;
     case '*':
       set_servo(1500);
-      //distance = mesureCm();
-      //Serial.println(distance);
+      distance = mesureCm();
+      Serial.print(distance);
+      Serial.println(" cm");
       break;
     case '-':
       set_servo(2000);
-      //distance = mesureCm();
-      //Serial.println(distance);
+      distance = mesureCm();
+      Serial.print(distance);
+      Serial.println(" cm");
       break;
   }
 }
@@ -188,9 +203,9 @@ void set_servo(int angle)
 
   for (i = 0; i < 70; i++)
   {
-    digitalWrite(11, HIGH);
+    digitalWrite(PIN_SERVO, HIGH);
     delayMicroseconds(angle);
-    digitalWrite(11, LOW);
+    digitalWrite(PIN_SERVO, LOW);
     delayMicroseconds(20000);
   }
 }
