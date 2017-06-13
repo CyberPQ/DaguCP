@@ -12,6 +12,10 @@ int PIN_SERVO = 12;
 int PIN_TRIG = 11;
 int PIN_ECHO = 6;
 
+#define POSITION_GAUCHE   (1000)
+#define POSITION_MILIEU   (1500)
+#define POSITION_DROITE   (2000)
+
 char Mode = 's';
 char Commande = ' ';
 
@@ -20,12 +24,8 @@ void setup() {
 
   // initialize serial:
   Serial.begin(9600);
-  Serial.println(" r : fait des rampes de vitesse");
-  Serial.println(" s : stop");
-  Serial.println(" m : manuel (pave numerique)");
-  Serial.println("   1,2,3,4,6,7,8,9 : controle");
-  Serial.println("   5 : arret");
-  Serial.println("   /,*,- : controle du servo moteur");
+  
+  
 
   digitalWrite(PIN_MOT1_DIR, LOW);
   digitalWrite(PIN_MOT2_DIR, LOW);
@@ -42,7 +42,7 @@ void setup() {
   pinMode(PIN_ECHO, INPUT);
 
   loop_stop();
-  set_servo(1500);
+  
 }
 
 void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
@@ -92,6 +92,16 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 }
 
 // the loop routine runs over and over again forever:
+void usage(void)
+{
+  Serial.println(" r : fait des rampes de vitesse");
+  Serial.println(" s : stop");
+  Serial.println(" m : manuel (pave numerique)");
+  Serial.println("   1,2,3,4,6,7,8,9 : controle");
+  Serial.println("   5 : arret");
+  Serial.println("   /,*,- : controle du servo moteur");
+}
+
 void loop_rampe() {
   vitesseMoteurS (vitesse, vitesse);
 
@@ -177,19 +187,20 @@ void loop_manuel(char Commande) {
       vitesseMoteurS (0, 0);
       break;
     case '/':
-      set_servo(1000);
+      set_servo(POSITION_GAUCHE);
       distance_gauche = mesureCm();
       Serial.print(distance_gauche);
       Serial.println(" cm");
       break;
     case '*':
-      set_servo(1500);
+      set_servo(POSITION_MILIEU);
       distance_centre = mesureCm();
       Serial.print(distance_centre);
       Serial.println(" cm");
       break;
+      
     case '-':
-      set_servo(2000);
+      set_servo(POSITION_DROITE);
       distance_droite = mesureCm();
       Serial.print(distance_droite);
       Serial.println(" cm");
@@ -199,19 +210,50 @@ void loop_manuel(char Commande) {
 
 void analyse_distance(void)
 {
-  set_servo(1000);
-  mesureCm();
+  set_servo(POSITION_GAUCHE);
+  distance_gauche = mesureCm();
   Serial.print(distance_gauche);
-  set_servo(1500);
-  mesureCm();
+  Serial.print(" ");
+  set_servo(POSITION_MILIEU);
+  distance_centre = mesureCm();
   Serial.print(distance_centre);
-  set_servo(2000);
-  mesureCm();
+  Serial.print(" ");
+  
+  set_servo(POSITION_DROITE);
+  distance_droite = mesureCm();
   Serial.print(distance_droite);
+  Serial.println(" ");
 }
 void loop_auto (void) 
 {
   analyse_distance();
+  if (distance_centre < 30)
+  {
+    if (distance_droite < distance_gauche)
+    {
+      vitesseMoteurS(vitesse, -vitesse);
+    }
+    else if (distance_droite > distance_gauche)
+    {
+      vitesseMoteurS(-vitesse, vitesse);
+    }
+  }
+  else 
+  {
+    if (distance_droite > distance_gauche)
+    {
+      vitesseMoteurS(0.25 * vitesse, vitesse);
+    }
+    else if (distance_droite < distance_gauche) 
+    {
+      vitesseMoteurS(vitesse, 0.25 * vitesse);
+    }
+    else
+    {
+      vitesseMoteurS(vitesse, vitesse);
+    }
+   
+  }
 }
 
 
@@ -257,8 +299,12 @@ void loop() {
         break;
       case 'a':
         Mode = 'a';
-        break;      
-    }
+        break; 
+      case '?':
+      case 'h':
+        usage();     
+        break;
+    }   
     Serial.print("Activation du mode ");
     Serial.print(Mode);
     Serial.print(" (vitesse courante : ");
@@ -289,6 +335,7 @@ void loop() {
       break;
     case 'a':
       //mode auto
+      vitesse = 100;
       loop_auto();
       break;
   }
