@@ -45,6 +45,12 @@ void setup() {
   pinMode(PIN_JOYSTICK_BOUTON, INPUT_PULLUP);
   loop_stop();
   
+  Serial.print("Batterie : ");
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 10V):
+  float voltage =  analogRead(A7) * (10.0 / 1023.0);
+  Serial.print(voltage);
+  Serial.println(" volts.");
+  
 }
 
 void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
