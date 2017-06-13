@@ -197,10 +197,21 @@ void loop_manuel(char Commande) {
   }
 }
 
-
+void analyse_distance(void)
+{
+  set_servo(1000);
+  mesureCm();
+  Serial.print(distance_gauche);
+  set_servo(1500);
+  mesureCm();
+  Serial.print(distance_centre);
+  set_servo(2000);
+  mesureCm();
+  Serial.print(distance_droite);
+}
 void loop_auto (void) 
 {
-  
+  analyse_distance();
 }
 
 
@@ -244,7 +255,9 @@ void loop() {
       case 'x':
         Mode = 'x';
         break;
-      
+      case 'a':
+        Mode = 'a';
+        break;      
     }
     Serial.print("Activation du mode ");
     Serial.print(Mode);
@@ -273,6 +286,10 @@ void loop() {
       //mode aleatoire
       loop_aleatoire();
       Touche = '\0';
+      break;
+    case 'a':
+      //mode auto
+      loop_auto();
       break;
   }
 }
