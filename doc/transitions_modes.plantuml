@@ -1,0 +1,19 @@
+@startuml
+[*] --> STOP : démarrage 
+
+state Manuel {
+  STOP -> ALEA :Console 'x'
+  STOP -down-> RAMPES :Console 'r'
+  STOP -down-> RC :Console 'm'
+  STOP :Arrêt complet de l'appareil
+  ALEA :Mouvements aleatoires
+  RAMPES :Rampes de vitesse
+  RC :Remote control  
+}
+  AUTO :Mode automatique
+
+
+STOP --> AUTO :Console 'a'
+AUTO -> STOP :Console 's' ou mouvement du joystick
+Manuel -up> STOP :Console 's'
+@enduml
