@@ -1,7 +1,9 @@
 int PIN_LED = 13;          
 int vitesse = 0;
-int distance = 0;
 int var_rampe = 5;
+int distance_gauche = 0;
+int distance_droite = 0;
+int distance_centre = 0;
 int PIN_MOT1_DIR = 7;
 int PIN_MOT2_DIR = 8;
 int PIN_MOT1_VIT = 9;
@@ -174,20 +176,20 @@ void loop_manuel(char Commande) {
       break;
     case '/':
       set_servo(1000);
-      distance = mesureCm();
-      Serial.print(distance);
+      distance_gauche = mesureCm();
+      Serial.print(distance_gauche);
       Serial.println(" cm");
       break;
     case '*':
       set_servo(1500);
-      distance = mesureCm();
-      Serial.print(distance);
+      distance_centre = mesureCm();
+      Serial.print(distance_centre);
       Serial.println(" cm");
       break;
     case '-':
       set_servo(2000);
-      distance = mesureCm();
-      Serial.print(distance);
+      distance_droite = mesureCm();
+      Serial.print(distance_droite);
       Serial.println(" cm");
       break;
   }

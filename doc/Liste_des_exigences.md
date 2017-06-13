@@ -32,28 +32,27 @@ Modes de fonctionnement
 
 ### Mode "Stop"
 
-dfghsdfgsdfg
-sdfg
+**EXG_STOP_01** : Le robot doit couper ses moteurs, arreter de bouger ses chenilles et le servo. 
 
 
 ### Mode "Manuel"
 
-dfghsdfgsdfg
-sdfg
+**EXG_MANU_01** : Le robot doit appliquer les ordres de mouvements envoyés grâce à la console ou grâce à un téléphone via le module bluetooth.
+
+**EXG_MANU_02** : Le robot doit pouvoir, sur demande de l'utilisateur, faire des mesures sur son evironement grâce au capteur ultrason dans les differentes directions.
 
 
 ### Mode "Pilotage automatique"
 
-dfghsdfgsdfg
-sdfg
+**EXG_AUTO_01** : Le robot doit pouvoir se déplacer librement en évitant les obstacles.
+ 
+**EXG_AUTO_02** : Le robot doit pouvoir mesurer la distance entre lui et les obstacles grâce au capteur ultrason. 
 
 ### Mode "Rampe"
 
-dfghsdfgsdfg
-sdfg
+**EXG_RAMP_01** : Le robot doit effectuer des rampes de vitesse (augmenter sa vitesse puis la diminuer en passsant par l'arrêt.)
 
-### Mode "Alléatoire"
+### Mode "Aléatoire"
 
-dfghsdfgsdfg
-sdfg
+**EXG_ALEA_01** : Le robot doit effectuer des mouvements aleatoires.
 
