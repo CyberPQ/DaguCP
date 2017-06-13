@@ -20,5 +20,11 @@ Chenille droite :
   - Encoder A   --> Arduino Pin 3
   - Encoder B   --> Arduino Pin 4
   - Motor       --> Arduino motor 2 (direction pin 8, PWM pin 10)
+  
+Servo branché sur la pin 12
+
+Emetteur d'ultra-sons :
+  - Trig        --> Arduino Pin 11
+  - Echo        --> Arduino Pin 6  
 
   
