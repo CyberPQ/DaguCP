@@ -11,6 +11,9 @@ int PIN_MOT2_VIT = 10;
 int PIN_SERVO = 12;
 int PIN_TRIG = 11;
 int PIN_ECHO = 6;
+int PIN_JOYSTICK_X = A1;
+int PIN_JOYSTICK_Y = A2;
+int PIN_JOYSTICK_BOUTON = A3;
 
 #define POSITION_GAUCHE   (1000)
 #define POSITION_MILIEU   (1500)
@@ -40,7 +43,9 @@ void setup() {
   pinMode(PIN_SERVO, OUTPUT);
   pinMode(PIN_TRIG, OUTPUT);
   pinMode(PIN_ECHO, INPUT);
-
+  pinMode(PIN_JOYSTICK_X, INPUT);
+  pinMode(PIN_JOYSTICK_Y, INPUT);
+  pinMode(PIN_JOYSTICK_BOUTON, INPUT_PULLUP);
   loop_stop();
   
 }
@@ -276,10 +281,18 @@ void loop_aleatoire()
   delay(1000);
 }
 
-
+void joystick_arret(void)
+{
+  if ((digitalRead(PIN_JOYSTICK_BOUTON)==0)||(analogRead(PIN_JOYSTICK_X)>518) || (analogRead(PIN_JOYSTICK_X)<504) || (analogRead(PIN_JOYSTICK_Y)>518)|| (analogRead(PIN_JOYSTICK_Y)<504))
+  {
+    Serial.println("ARRET D'URGENCE !!!");
+    Mode = 's'; 
+  }
+}
 
 void loop() {
   char Touche = 's';
+  joystick_arret();
   if (Serial.available() > 0)
   {
     Touche = Serial.read();
