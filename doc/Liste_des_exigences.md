@@ -45,20 +45,19 @@ Modes de fonctionnement
 
 **EXG_MANU_01** : Le robot doit appliquer les ordres de mouvements envoyés grâce à la console ou grâce à un téléphone via le module bluetooth.
 
-**EXG_MANU_02** : Le robot doit pouvoir, sur demande de l'utilisateur, faire des mesures sur son evironement grâce au capteur ultrason dans les differentes directions.
-
+**EXG_MANU_02** : lse differents ordres possibles sont avancer et reculer en ligne droite, tourner sur lui-même dans les deux sens, avancer et reculer en ligne courbe vers la driote et vers la gauche. 
 
 ### Mode "Pilotage automatique"
 
-**EXG_AUTO_01** : Le robot doit pouvoir se déplacer librement en évitant les obstacles.
- 
-**EXG_AUTO_02** : Le robot doit pouvoir mesurer la distance entre lui et les obstacles grâce au capteur ultrason. 
+**EXG_AUTO_01** : Le robot doit pouvoir traverser le couloir en évitant les obstacles.
 
 ### Mode "Rampe"
 
 **EXG_RAMP_01** : Le robot doit effectuer des rampes de vitesse (augmenter sa vitesse puis la diminuer en passsant par l'arrêt.)
 
+**EXG_RAMP_02** : Ses rampes doivent mesurer ... cm
+
 ### Mode "Aléatoire"
 
-**EXG_ALEA_01** : Le robot doit effectuer des mouvements aleatoires.
+**EXG_ALEA_01** : Toutes les secondes des vitesses sont aleatoirement choisies pour la chenille droite et la chenille gauche appliquées pendant une seconde.
 

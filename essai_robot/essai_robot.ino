@@ -33,6 +33,7 @@ void setup() {
   digitalWrite(PIN_MOT2_VIT, LOW);
 
   pinMode(PIN_MOT1_DIR, OUTPUT);
+  pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_MOT2_DIR, OUTPUT);
   pinMode(PIN_MOT1_VIT, OUTPUT);
   pinMode(PIN_MOT2_VIT, OUTPUT);
@@ -106,7 +107,8 @@ void loop_rampe() {
 void loop_stop()
 {
   vitesseMoteurS (0, 0);
-  delay(300);
+  digitalWrite(PIN_LED, !digitalRead(PIN_LED));  //invertion état de la led
+  delay(1000);
 }
  
 int mesureCm(void)
@@ -196,7 +198,10 @@ void loop_manuel(char Commande) {
 }
 
 
-
+void loop_auto (void) 
+{
+  
+}
 
 
 void set_servo(int angle)
@@ -222,8 +227,6 @@ void loop_aleatoire()
 
 void loop() {
   char Touche = 's';
-  digitalWrite(PIN_LED, HIGH);
-
   if (Serial.available() > 0)
   {
     Touche = Serial.read();
