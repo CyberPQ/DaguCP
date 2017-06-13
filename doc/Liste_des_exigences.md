@@ -30,7 +30,13 @@ Sécurité
 Modes de fonctionnement
 -------------------------
 
+### Transitions entre les modes de fonctionnement
+
+**EXG_TRAN_01** : Les transitions entre les modes doivent respecter le schema suivant 
+
+![Transition entre les modes](transitions_modes.png)
 ### Mode "Stop"
+
 
 **EXG_STOP_01** : Le robot doit couper ses moteurs, arreter de bouger ses chenilles et le servo. 
 
