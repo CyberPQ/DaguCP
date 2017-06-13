@@ -1,4 +1,4 @@
-int PIN_LED = 13;          
+int PIN_LED = 13;
 int vitesse = 0;
 int var_rampe = 5;
 int distance_gauche = 0;
@@ -15,9 +15,9 @@ int PIN_JOYSTICK_X = A1;
 int PIN_JOYSTICK_Y = A2;
 int PIN_JOYSTICK_BOUTON = A3;
 
-#define POSITION_GAUCHE   (1000)
 #define POSITION_MILIEU   (1500)
-#define POSITION_DROITE   (2000)
+#define POSITION_GAUCHE   (POSITION_MILIEU-250) // min : 1000
+#define POSITION_DROITE   (POSITION_MILIEU+250) // max : 2000
 
 char Mode = 's';
 char Commande = ' ';
@@ -26,7 +26,7 @@ void setup() {
 
   // initialize serial:
   Serial.begin(115200);
-  
+
   digitalWrite(PIN_MOT1_DIR, LOW);
   digitalWrite(PIN_MOT2_DIR, LOW);
   digitalWrite(PIN_MOT1_VIT, LOW);
@@ -44,7 +44,7 @@ void setup() {
   pinMode(PIN_JOYSTICK_Y, INPUT);
   pinMode(PIN_JOYSTICK_BOUTON, INPUT_PULLUP);
   loop_stop();
-  
+
   Serial.print("Batterie : ");
   // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 10V):
   float voltage =  analogRead(A7) * (10.0 / 1023.0);
@@ -131,19 +131,19 @@ void loop_stop()
   vitesseMoteurS (0, 0);
   digitalWrite(PIN_LED, !digitalRead(PIN_LED));  //invertion état de la led
   delay(500);
-  if (analogRead(PIN_JOYSTICK_X)>1000)
+  if (analogRead(PIN_JOYSTICK_X) > 1000)
   {
-   digitalWrite(PIN_LED, LOW);
-   delay(1000);
-   if (analogRead(PIN_JOYSTICK_X)>1000)
-   {
+    digitalWrite(PIN_LED, LOW);
+    delay(1000);
+    if (analogRead(PIN_JOYSTICK_X) > 1000)
+    {
       digitalWrite(PIN_LED, HIGH);
       delay(1000);
       Mode = 'a';
-   }  
+    }
   }
 }
- 
+
 int mesureCm(void)
 {
   digitalWrite(PIN_TRIG, LOW);
@@ -151,15 +151,15 @@ int mesureCm(void)
   digitalWrite(PIN_TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(PIN_TRIG, LOW);
-    
-    int microseconds = pulseIn(PIN_ECHO, HIGH);
-    int mesureCm = microseconds / 29 / 2;
-    return mesureCm;
+
+  int microseconds = pulseIn(PIN_ECHO, HIGH);
+  int mesureCm = microseconds / 29 / 2;
+  return mesureCm;
 }
-  
+
 void loop_manuel(char Commande) {
-  
-  
+
+
   digitalWrite(PIN_LED, HIGH);
   delay(150);
   digitalWrite(PIN_LED, LOW);
@@ -172,7 +172,7 @@ void loop_manuel(char Commande) {
       vitesseMoteurS (0, 0);
       break;
     case '2':
-      vitesseMoteurS(1 - vitesse, -vitesse);
+      vitesseMoteurS( -vitesse, -vitesse);
       delay(2000);
       vitesseMoteurS (0, 0);
       break;
@@ -221,7 +221,7 @@ void loop_manuel(char Commande) {
       Serial.print(distance_centre);
       Serial.println(" cm");
       break;
-      
+
     case '-':
       set_servo(POSITION_DROITE);
       distance_droite = mesureCm();
@@ -235,43 +235,47 @@ void analyse_distance(void)
 {
   set_servo(POSITION_GAUCHE);
   distance_gauche = mesureCm();
-  delay(500);
-  set_servo(POSITION_MILIEU);
-  distance_centre = mesureCm();
-  delay(500);
+
+  /* set_servo(POSITION_MILIEU);
+    distance_centre = mesureCm();
+    delay(500);
+  */
   set_servo(POSITION_DROITE);
   distance_droite = mesureCm();
-  delay(500);
+
 }
-void loop_auto (void) 
+void loop_auto (void)
 {
+
   analyse_distance();
-  if (distance_centre < 40)
+
+  Serial.print(distance_droite);
+  Serial.print(" ");
+  Serial.print(distance_gauche);
+  Serial.print(" ");
+
+  if (distance_gauche < 40 && distance_droite < 40)
   {
-    if (distance_droite < distance_gauche)
+    vitesseMoteurS(-vitesse, -vitesse);
+     Serial.println("reculer");
+  }
+  else
+  {
+    if (distance_droite < 40)
     {
       vitesseMoteurS(vitesse, -vitesse);
+      Serial.println("virage gauche");
     }
-    else if (distance_droite > distance_gauche)
+    else if (distance_gauche < 40)
     {
       vitesseMoteurS(-vitesse, vitesse);
-    }
-  }
-  else 
-  {
-    if (distance_gauche < 50)
-    {
-      vitesseMoteurS(0, vitesse);
-    }
-    else if (distance_droite < 50) 
-    {
-      vitesseMoteurS(vitesse, 0);
+      Serial.println("virage droite");
     }
     else
     {
       vitesseMoteurS(vitesse, vitesse);
+      Serial.println("avancer");
     }
-   
   }
 }
 
@@ -297,14 +301,14 @@ void loop_aleatoire()
 
 void joystick_arret(void)
 {
-  if ((digitalRead(PIN_JOYSTICK_BOUTON)==0)
-        || (analogRead(PIN_JOYSTICK_X)>518) 
-        || (analogRead(PIN_JOYSTICK_X)<504) 
-        || (analogRead(PIN_JOYSTICK_Y)>518)
-        || (analogRead(PIN_JOYSTICK_Y)<504))
+  if ((digitalRead(PIN_JOYSTICK_BOUTON) == 0)
+      || (analogRead(PIN_JOYSTICK_X) > 518)
+      || (analogRead(PIN_JOYSTICK_X) < 504)
+      || (analogRead(PIN_JOYSTICK_Y) > 518)
+      || (analogRead(PIN_JOYSTICK_Y) < 504))
   {
     Serial.println("ARRET D'URGENCE !!!");
-    Mode = 's'; 
+    Mode = 's';
   }
 }
 
@@ -330,12 +334,12 @@ void loop() {
         break;
       case 'a':
         Mode = 'a';
-        break; 
+        break;
       case '?':
       case 'h':
-        usage();     
+        usage();
         break;
-    }   
+    }
     Serial.print("Activation du mode ");
     Serial.print(Mode);
     Serial.print(" (vitesse courante : ");
