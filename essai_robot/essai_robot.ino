@@ -24,12 +24,9 @@ char Commande = ' ';
 
 void setup() {
 
-
   // initialize serial:
-  Serial.begin(9600);
+  Serial.begin(115200);
   
-  
-
   digitalWrite(PIN_MOT1_DIR, LOW);
   digitalWrite(PIN_MOT2_DIR, LOW);
   digitalWrite(PIN_MOT1_VIT, LOW);
@@ -123,7 +120,18 @@ void loop_stop()
 {
   vitesseMoteurS (0, 0);
   digitalWrite(PIN_LED, !digitalRead(PIN_LED));  //invertion état de la led
-  delay(1000);
+  delay(500);
+  if (analogRead(PIN_JOYSTICK_X)>1000)
+  {
+   digitalWrite(PIN_LED, LOW);
+   delay(1000);
+   if (analogRead(PIN_JOYSTICK_X)>1000)
+   {
+      digitalWrite(PIN_LED, HIGH);
+      delay(1000);
+      Mode = 'a';
+   }  
+  }
 }
  
 int mesureCm(void)
@@ -245,11 +253,11 @@ void loop_auto (void)
   }
   else 
   {
-    if (distance_droite > distance_gauche)
+    if (distance_droite < 40)
     {
       vitesseMoteurS(0.25 * vitesse, vitesse);
     }
-    else if (distance_droite < distance_gauche) 
+    else if (distance_gauche < 40) 
     {
       vitesseMoteurS(vitesse, 0.25 * vitesse);
     }
@@ -283,7 +291,11 @@ void loop_aleatoire()
 
 void joystick_arret(void)
 {
-  if ((digitalRead(PIN_JOYSTICK_BOUTON)==0)||(analogRead(PIN_JOYSTICK_X)>518) || (analogRead(PIN_JOYSTICK_X)<504) || (analogRead(PIN_JOYSTICK_Y)>518)|| (analogRead(PIN_JOYSTICK_Y)<504))
+  if ((digitalRead(PIN_JOYSTICK_BOUTON)==0)
+        || (analogRead(PIN_JOYSTICK_X)>518) 
+        || (analogRead(PIN_JOYSTICK_X)<504) 
+        || (analogRead(PIN_JOYSTICK_Y)>518)
+        || (analogRead(PIN_JOYSTICK_Y)<504))
   {
     Serial.println("ARRET D'URGENCE !!!");
     Mode = 's'; 

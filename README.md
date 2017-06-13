@@ -27,4 +27,15 @@ Emetteur d'ultra-sons :
   - Trig        --> Arduino Pin 11
   - Echo        --> Arduino Pin 6  
 
+Joystick :
+  - Axe x       --> Arduino Pin A1 (0 to 1024)
+  - Axe y       --> Arduino Pin A2 (0 to 1024)
+  - Button      --> Arduino Pin A3 (HIGH/LOW)
+  
+  ## Utilisation
+        Au démarage, le robot est en Mode STOP. On le voit grâce à la led qui clignote.
+        Pour passer en mode AUTO, tirer le joystick vers l'arrière du rover, la led s'éteind, attendre qu'elle se rallume puis relacher le joystick.
+        
+        A tout moment, un mouvement du joystick fait basculer le robot en mode STOP.
+        
   
