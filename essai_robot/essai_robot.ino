@@ -16,8 +16,8 @@ int PIN_JOYSTICK_Y = A2;
 int PIN_JOYSTICK_BOUTON = A3;
 
 #define POSITION_MILIEU   (1500)
-#define POSITION_GAUCHE   (POSITION_MILIEU-250) // min : 1000
-#define POSITION_DROITE   (POSITION_MILIEU+250) // max : 2000
+#define POSITION_GAUCHE   (POSITION_MILIEU-500) // min : 1000
+#define POSITION_DROITE   (POSITION_MILIEU+500) // max : 2000
 
 char Mode = 's';
 char Commande = ' ';
@@ -45,11 +45,7 @@ void setup() {
   pinMode(PIN_JOYSTICK_BOUTON, INPUT_PULLUP);
   loop_stop();
 
-  Serial.print("Batterie : ");
-  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 10V):
-  float voltage =  analogRead(A7) * (10.0 / 1023.0);
-  Serial.print(voltage);
-  Serial.println(" volts.");
+
   usage();
   //radar();
 }
@@ -58,11 +54,11 @@ void radar(void)
 {
   int distance_radar = 0;
   //int i = 0;
-  for(int i = 1000; i< 2000; i = i+10 )
+  for (int i = 1000; i < 2000; i = i + 10 )
   {
     set_servo(i);
     distance_radar = mesureCm();
-    Serial.println(distance_radar); 
+    Serial.println(distance_radar);
   }
 }
 
@@ -116,6 +112,11 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 // the loop routine runs over and over again forever:
 void usage(void)
 {
+  Serial.print("Batterie : ");
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 10V):
+  float voltage =  analogRead(A7) * (10.0 / 1023.0);
+  Serial.print(voltage);
+  Serial.println(" volts.");
   Serial.println(" h/? : Aide");
   Serial.println(" a/joystick : Automatique");
   Serial.println(" x : Aleatoire");
@@ -126,6 +127,7 @@ void usage(void)
   Serial.println("   5 : arret");
   Serial.println("   /,*,- : controle du servo moteur");
   Serial.println(" Plus d'aide dans le fichier README");
+  Serial.println(" ");
 }
 
 void loop_rampe() {
@@ -250,31 +252,57 @@ void analyse_distance(void)
   set_servo(POSITION_GAUCHE);
   distance_gauche = mesureCm();
 
-  /* set_servo(POSITION_MILIEU);
-    distance_centre = mesureCm();
-    delay(500);
-  */
+  set_servo(POSITION_MILIEU);
+  distance_centre = mesureCm();
+
   set_servo(POSITION_DROITE);
   distance_droite = mesureCm();
-
 }
 void loop_auto (void)
 {
-
   analyse_distance();
-
-  Serial.print(distance_droite);
-  Serial.print(" ");
   Serial.print(distance_gauche);
   Serial.print(" ");
-
-  if (distance_gauche < 40 && distance_droite < 40)
+  Serial.print(distance_centre);
+  Serial.print(" ");
+  Serial.println(distance_droite);
+  
+  if ((distance_centre < 80) && (distance_centre != 0))
   {
-    vitesseMoteurS(-vitesse, -vitesse);
-     Serial.println("reculer");
+    if (distance_droite < 50)
+    {
+      vitesseMoteurS(vitesse, -vitesse);
+      delay(2140-distance_droite*15);
+      vitesseMoteurS(0, 0);
+      //vitesseMoteurS(vitesse, vitesse);
+      //delay(400);
+    }
+    else if (distance_gauche < 50)
+    {
+      vitesseMoteurS(-vitesse, vitesse);
+      delay(2140-distance_gauche*15);
+      vitesseMoteurS(0, 0);
+
+      //vitesseMoteurS(vitesse, vitesse);
+      //delay(400);
+    }
   }
   else
-  {
+    vitesseMoteurS(vitesse, vitesse);
+
+}
+/*Serial.print(distance_droite);
+    Serial.print(" ");
+    Serial.print(distance_gauche);
+    Serial.print(" ");
+
+    if (distance_gauche < 40 && distance_droite < 40)
+    {
+    vitesseMoteurS(-vitesse, -vitesse);
+     Serial.println("reculer");
+    }
+    else
+    {
     if (distance_droite < 40)
     {
       vitesseMoteurS(vitesse, -vitesse);
@@ -290,8 +318,7 @@ void loop_auto (void)
       vitesseMoteurS(vitesse, vitesse);
       Serial.println("avancer");
     }
-  }
-}
+    }*/
 
 
 void set_servo(int angle)
