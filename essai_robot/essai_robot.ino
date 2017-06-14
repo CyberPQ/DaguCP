@@ -51,7 +51,21 @@ void setup() {
   Serial.print(voltage);
   Serial.println(" volts.");
   usage();
+  //radar();
 }
+
+void radar(void)
+{
+  int distance_radar = 0;
+  //int i = 0;
+  for(int i = 1000; i< 2000; i = i+10 )
+  {
+    set_servo(i);
+    distance_radar = mesureCm();
+    Serial.println(distance_radar); 
+  }
+}
+
 
 void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
 {
@@ -338,6 +352,9 @@ void loop() {
       case '?':
       case 'h':
         usage();
+        break;
+      case 't':
+        radar();
         break;
     }
     Serial.print("Activation du mode ");
