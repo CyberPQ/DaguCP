@@ -269,23 +269,25 @@ void loop_auto (void)
   
   if ((distance_centre < 80) && (distance_centre != 0))
   {
-    if (distance_droite < 50)
+    if (distance_droite < distance_gauche && distance_gauche > 50)
     {
       vitesseMoteurS(vitesse, -vitesse);
-      delay(2140-distance_droite*15);
+      delay(2140-distance_droite*30);
       vitesseMoteurS(0, 0);
       //vitesseMoteurS(vitesse, vitesse);
       //delay(400);
     }
-    else if (distance_gauche < 50)
+    else if (distance_gauche < distance_droite && distance_droite > 50 )
     {
       vitesseMoteurS(-vitesse, vitesse);
-      delay(2140-distance_gauche*15);
+      delay(2140-distance_gauche*30);
       vitesseMoteurS(0, 0);
 
       //vitesseMoteurS(vitesse, vitesse);
       //delay(400);
     }
+    else
+      vitesseMoteurS(-vitesse, -vitesse);
   }
   else
     vitesseMoteurS(vitesse, vitesse);
