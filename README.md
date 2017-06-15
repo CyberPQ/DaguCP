@@ -1,4 +1,4 @@
-# DaguCP
+#DaguCP
 
 Robot Dagu de Clément, réalisé pendant le stage en entreprise
 
@@ -39,9 +39,12 @@ Joystick :
 Le capteur ultrason est très bruité et beaucoup de ses valeurs sont erronées. j'ai donc effectué des mesures dans differentes positions du robot afin de mieux comprendre les réactions du capteurs. 
 
 ### Position 1
-![](doc\Photos\milieu droite.png)
+![](doc/Photos/milieu_droite.png)
+![](doc/Photos/milieu_gauche.png)
+![](doc/Photos/milieu_vers_la_droite.png)
+![](doc/Photos/droite_vers_la_droite.png)
+![](doc/Photos/milieu_devant.png)
 
-![](courbe1.png)
 
 
 Au vu des courbes on en déduit que le capteur détecte clairement un obstacle entre 20 et 200 cm. En dehors de ces valeurs, l'obstacle peut être détécté mais le bruit empêche le robot de prendre des décisions intelligentes. De plus, si l'echo de l'ultrason ne revient pas au bout d'une seconde (*timeout*) le capteur renvoi une distance de 0cm. Dans ce cas la, le programme devra considerer cette valeur comme un espace libre devant le robot.
