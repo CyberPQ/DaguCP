@@ -168,8 +168,10 @@ int mesureCm(void)
   delayMicroseconds(10);
   digitalWrite(PIN_TRIG, LOW);
 
-  int microseconds = pulseIn(PIN_ECHO, HIGH);
+  int microseconds = pulseIn(PIN_ECHO, HIGH, 50000);
   int mesureCm = microseconds / 29 / 2;
+  if (mesureCm == 0)
+    mesureCm = 400;
   return mesureCm;
 }
 
@@ -267,7 +269,7 @@ void loop_auto (void)
   Serial.print(" ");
   Serial.println(distance_droite);
   
-  if ((distance_centre < 80) && (distance_centre != 0))
+  if (distance_centre < 80)
   {
     if (distance_droite < distance_gauche && distance_gauche > 50)
     {
