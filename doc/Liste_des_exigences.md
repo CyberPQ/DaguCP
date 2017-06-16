@@ -43,9 +43,9 @@ Modes de fonctionnement
 
 ### Mode "Manuel"
 
-**EXG_MANU_01** : Le robot doit appliquer les ordres de mouvements envoyés grâce à la console ou grâce à un téléphone via le module bluetooth.
+**EXG_MANU_01** : Le robot doit appliquer les ordres de mouvements envoyés grâce à la console série ou grâce à un téléphone via le module bluetooth.
 
-**EXG_MANU_02** : lse differents ordres possibles sont avancer et reculer en ligne droite, tourner sur lui-même dans les deux sens, avancer et reculer en ligne courbe vers la driote et vers la gauche. 
+**EXG_MANU_02** : les differents ordres possibles sont avancer et reculer en ligne droite, tourner sur lui-même dans les deux sens, avancer et reculer en ligne courbe vers la droite et vers la gauche. 
 
 ### Mode "Pilotage automatique"
 
