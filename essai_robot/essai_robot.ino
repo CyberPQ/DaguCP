@@ -214,12 +214,12 @@ void loop_manuel(char Commande) {
       break;
     case '4':
       vitesseMoteurS(vitesse, -vitesse);
-      delay(700);
+      delay(600);
       vitesseMoteurS (0, 0);
       break;
     case '6':
       vitesseMoteurS(-vitesse, vitesse);
-      delay(700);
+      delay(600);
       vitesseMoteurS (0, 0);
       break;
     case '5':
@@ -287,20 +287,22 @@ void loop_auto (void)
   Serial.print(" ");
   Serial.println(distance_droite);
   
-  if (distance_centre < 80)
+  if (distance_centre < 60 || distance_droite < 20 || distance_gauche < 20)
   {
-    if (distance_droite < distance_gauche && distance_gauche > 50)
+    if (distance_droite < distance_gauche) //&& distance_gauche > 50)
     {
-      vitesseMoteurS(vitesse, -vitesse);
-      delay(2140-distance_droite*30);
+      vitesseMoteurS(-vitesse, vitesse);
+      delay(600);
+      //delay(2140-distance_droite*30);
       vitesseMoteurS(0, 0);
       //vitesseMoteurS(vitesse, vitesse);
       //delay(400);
     }
-    else if (distance_gauche < distance_droite && distance_droite > 50 )
+    else if (distance_gauche < distance_droite) // && distance_droite > 50 )
     {
-      vitesseMoteurS(-vitesse, vitesse);
-      delay(2140-distance_gauche*30);
+      vitesseMoteurS(vitesse, -vitesse);
+      delay(600);
+      //delay(2140-distance_gauche*30);
       vitesseMoteurS(0, 0);
 
       //vitesseMoteurS(vitesse, vitesse);
@@ -308,10 +310,11 @@ void loop_auto (void)
     }
     else
       vitesseMoteurS(-vitesse, -vitesse);
+      
   }
   else
     vitesseMoteurS(vitesse, vitesse);
-
+    
 }
 /*Serial.print(distance_droite);
     Serial.print(" ");
@@ -436,7 +439,7 @@ void loop() {
       break;
     case 'a':
       //mode auto
-      vitesse = 100;
+      vitesse = 255 ;
       loop_auto();
       break;
   }
