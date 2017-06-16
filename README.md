@@ -1,4 +1,4 @@
-#DaguCP
+# DaguCP
 
 Robot Dagu de Clément, réalisé pendant le stage en entreprise
 
@@ -13,13 +13,13 @@ Chenille gauche :
 
   - Encodeur A   --> Arduino Pin 2
   - Encodeur B   --> Arduino Pin 5
-  - Moteur       --> Arduino motor 1 (marche avant pin .., marche arrière pin .., PWM pin 9)
+  - Moteur       --> Arduino motor 1 (marche avant pin 7, marche arrière pin A4, PWM pin 9)
 
 Chenille droite :
 
   - Encodeur A   --> Arduino Pin 3
   - Encodeur B   --> Arduino Pin 4
-  - Moteur       --> Arduino motor 2 (marche avant pin .., marche arrière pin .., PWM pin 10)
+  - Moteur       --> Arduino motor 2 (marche avant pin 8, marche arrière pin A5, PWM pin 10)
   
 Servo branché sur la pin 12
 

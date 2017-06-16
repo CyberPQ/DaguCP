@@ -5,9 +5,9 @@ int distance_gauche = 0;
 int distance_droite = 0;
 int distance_centre = 0;
 int PIN_MOT1_AV = 7;
-int PIN_MOT1_AR = 8;
-int PIN_MOT2_AV = 7;
-int PIN_MOT2_AR = 8;
+int PIN_MOT1_AR = A4;
+int PIN_MOT2_AV = 8;
+int PIN_MOT2_AR = A5;
 int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
 int PIN_SERVO = 12;
@@ -36,16 +36,20 @@ void setup() {
   digitalWrite(PIN_MOT1_VIT, LOW);
   digitalWrite(PIN_MOT2_VIT, LOW);
 
-  pinMode(PIN_MOT1_AV, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
+  
+  pinMode(PIN_MOT1_AV, OUTPUT);
   pinMode(PIN_MOT1_AR, OUTPUT);
+  pinMode(PIN_MOT1_VIT, OUTPUT);
+  
   pinMode(PIN_MOT2_AV, OUTPUT);
   pinMode(PIN_MOT2_AR, OUTPUT);
-  pinMode(PIN_MOT1_VIT, OUTPUT);
   pinMode(PIN_MOT2_VIT, OUTPUT);
+  
   pinMode(PIN_SERVO, OUTPUT);
   pinMode(PIN_TRIG, OUTPUT);
   pinMode(PIN_ECHO, INPUT);
+  
   pinMode(PIN_JOYSTICK_X, INPUT);
   pinMode(PIN_JOYSTICK_Y, INPUT);
   pinMode(PIN_JOYSTICK_BOUTON, INPUT_PULLUP);
@@ -103,16 +107,18 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 
   //Serial.println(vitesse);
 
-  digitalWrite(PIN_MOTEUR_AV, LOW);
-  digitalWrite(PIN_MOTEUR_AR, LOW);
+  //digitalWrite(PIN_MOTEUR_AV, LOW);
+  //digitalWrite(PIN_MOTEUR_AR, LOW);
   
   if (vitesse_signe > 0)
   {
     digitalWrite(PIN_MOTEUR_AV, HIGH);
+    digitalWrite(PIN_MOTEUR_AR, LOW);
     analogWrite(PIN_MOTEUR_VIT, vitesse_signe);
   }
   else
   {
+    digitalWrite(PIN_MOTEUR_AV, LOW);
     digitalWrite(PIN_MOTEUR_AR, HIGH);
     analogWrite(PIN_MOTEUR_VIT, -vitesse_signe);
   }
@@ -419,7 +425,7 @@ void loop() {
       break;
     case 'm':
       // mode manuel
-      vitesse = 100;
+      vitesse = 255;
       loop_manuel(Touche);
       Touche = '\0';
       break;
