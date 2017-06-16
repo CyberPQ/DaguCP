@@ -7,19 +7,19 @@ Robot Dagu de Clément, réalisé pendant le stage en entreprise
 
 La carte Arduino utilisée est assimilable à une carte Nano 328.
 
-La led bleue est disppnible sur la pin 13.
+La led bleue est disponible sur la pin 13.
 
 Chenille gauche :
 
-  - Encoder A   --> Arduino Pin 2
-  - Encoder B   --> Arduino Pin 5
-  - Motor       --> Arduino motor 1 (direction pin 7, PWM pin 9)
+  - Encodeur A   --> Arduino Pin 2
+  - Encodeur B   --> Arduino Pin 5
+  - Moteur       --> Arduino motor 1 (marche avant pin .., marche arrière pin .., PWM pin 9)
 
 Chenille droite :
 
-  - Encoder A   --> Arduino Pin 3
-  - Encoder B   --> Arduino Pin 4
-  - Motor       --> Arduino motor 2 (direction pin 8, PWM pin 10)
+  - Encodeur A   --> Arduino Pin 3
+  - Encodeur B   --> Arduino Pin 4
+  - Moteur       --> Arduino motor 2 (marche avant pin .., marche arrière pin .., PWM pin 10)
   
 Servo branché sur la pin 12
 

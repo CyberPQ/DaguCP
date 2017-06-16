@@ -4,8 +4,10 @@ int var_rampe = 5;
 int distance_gauche = 0;
 int distance_droite = 0;
 int distance_centre = 0;
-int PIN_MOT1_DIR = 7;
-int PIN_MOT2_DIR = 8;
+int PIN_MOT1_AV = 7;
+int PIN_MOT1_AR = 8;
+int PIN_MOT2_AV = 7;
+int PIN_MOT2_AR = 8;
 int PIN_MOT1_VIT = 9;
 int PIN_MOT2_VIT = 10;
 int PIN_SERVO = 12;
@@ -27,14 +29,18 @@ void setup() {
   // initialize serial:
   Serial.begin(115200);
 
-  digitalWrite(PIN_MOT1_DIR, LOW);
-  digitalWrite(PIN_MOT2_DIR, LOW);
+  digitalWrite(PIN_MOT1_AV, LOW);
+  digitalWrite(PIN_MOT1_AR, LOW);
+  digitalWrite(PIN_MOT2_AV, LOW);
+  digitalWrite(PIN_MOT2_AR, LOW);
   digitalWrite(PIN_MOT1_VIT, LOW);
   digitalWrite(PIN_MOT2_VIT, LOW);
 
-  pinMode(PIN_MOT1_DIR, OUTPUT);
+  pinMode(PIN_MOT1_AV, OUTPUT);
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_MOT2_DIR, OUTPUT);
+  pinMode(PIN_MOT1_AR, OUTPUT);
+  pinMode(PIN_MOT2_AV, OUTPUT);
+  pinMode(PIN_MOT2_AR, OUTPUT);
   pinMode(PIN_MOT1_VIT, OUTPUT);
   pinMode(PIN_MOT2_VIT, OUTPUT);
   pinMode(PIN_SERVO, OUTPUT);
@@ -72,19 +78,22 @@ void vitesseMoteurS(int VIT_moteur1, int VIT_moteur2)
 
 void vitesseMoteur(int no_moteur, int vitesse_signe)
 {
-  int PIN_MOTEUR_DIR = 0;
   int PIN_MOTEUR_VIT = 0;
+  int PIN_MOTEUR_AV = 0;
+  int PIN_MOTEUR_AR = 0;
 
   if (no_moteur == 1)
   {
     //Serial.print("moteur 1 : ");
-    PIN_MOTEUR_DIR = PIN_MOT1_DIR ;
+    PIN_MOTEUR_AV = PIN_MOT1_AV;
+    PIN_MOTEUR_AR = PIN_MOT1_AR;
     PIN_MOTEUR_VIT = PIN_MOT1_VIT ;
   }
   else if (no_moteur == 2)
   {
     //Serial.print("moteur 2 : ");
-    PIN_MOTEUR_DIR = PIN_MOT2_DIR ;
+    PIN_MOTEUR_AV = PIN_MOT2_AV ;
+    PIN_MOTEUR_AR = PIN_MOT2_AR ;
     PIN_MOTEUR_VIT = PIN_MOT2_VIT ;
   }
   else
@@ -94,14 +103,17 @@ void vitesseMoteur(int no_moteur, int vitesse_signe)
 
   //Serial.println(vitesse);
 
+  digitalWrite(PIN_MOTEUR_AV, LOW);
+  digitalWrite(PIN_MOTEUR_AR, LOW);
+  
   if (vitesse_signe > 0)
   {
-    digitalWrite(PIN_MOTEUR_DIR, HIGH);
+    digitalWrite(PIN_MOTEUR_AV, HIGH);
     analogWrite(PIN_MOTEUR_VIT, vitesse_signe);
   }
   else
   {
-    digitalWrite(PIN_MOTEUR_DIR, LOW);
+    digitalWrite(PIN_MOTEUR_AR, HIGH);
     analogWrite(PIN_MOTEUR_VIT, -vitesse_signe);
   }
 
